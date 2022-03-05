@@ -35,34 +35,48 @@ class Board extends React.Component {
 
   // 生成雷区
   createMine() {
-    // 根据等级随机生成雷区位置
-    const minePosition = []
-    for (let i = 0; i < this.props.level * 10; i++) {
-      minePosition.push([this.createRandom(), this.createRandom()])
-    }
-    // 根据雷的位置布置在雷区中
-    const currBoard = []
-    for (let i = 0; i < this.props.level * 10; i ++) {
-      currBoard.push(new Array(this.props.level * 10).fill(null))
-    }
-    currBoard.forEach((row, rowIndex) => {
-      row.forEach((col, colIndex) => {
-        currBoard[rowIndex][colIndex] = {
+    let newBoard = []
+    const level = this.props.level
+    const mineNum = level * 10 * level
+    for (let i = 0; i < (level * 10) * (level * 10); i ++) {
+      if (i < mineNum) {
+        newBoard.push({
+          number: -1,
+          isMask: true,
+          isFlag: false // 小红旗
+        })
+      } else {
+        newBoard.push({
           number: 0,
           isMask: true,
-          isFlag: false, // 小红旗
-          position: {
-            x: rowIndex,
-            y: colIndex
-          }
+          isFlag: false // 小红旗
+        })
+      }
+    }
+    newBoard = newBoard.sort(() => {
+      return Math.random() - 0.5
+    })
+    const currBoard = this.chunk(newBoard, level * 10)
+    for (let i = 0; i < currBoard.length; i++) {
+      for (let j = 0; j < currBoard[i].length; j++) {
+        currBoard[i][j].position = {
+          x: i,
+          y: j
         }
-      })
-    })
-    minePosition.forEach(positionItem => {
-      currBoard[positionItem[0]][positionItem[1]].number = -1
-    })
+      }
+    }
     this.setState({ board: currBoard })
     this.createNumber(currBoard)
+  }
+
+  chunk(arr,size) {
+    var num = []
+    for(var i=0;i<Math.ceil(arr.length/size);i++){
+      var start = i*size
+      var end = start+size
+      num.push(arr.slice(start,end))
+    }
+    return num
   }
 
   // 填充数字
@@ -140,7 +154,7 @@ class Board extends React.Component {
     const currBorad = this.state.board
     for (let i = 0; i < currBorad.length; i++) {
       for (let j = 0; j < currBorad[i].length; j++) {
-        currBorad[x][y].isFlag = false
+        currBorad[i][j].isFlag = false
       }
     }
     this.setState({ board: currBorad })
@@ -175,7 +189,7 @@ class Board extends React.Component {
 
   showAllMine(board) {
     let currBoard = board.slice()
-    currBoard = currBoard.forEach(row => {
+    currBoard.forEach(row => {
       row.forEach(col => {
         col.isMask = false
       })
