@@ -121,6 +121,7 @@ class Board extends React.Component {
       this.setState({board: newBoard})
       this.setState({isOver: true})
       this.showAllMine(this.state.board)
+      this.clearAllFlag() // 如果踩雷则清除所有小旗
       window.alert('踩雷了')
       return
     }
@@ -135,14 +136,41 @@ class Board extends React.Component {
     }
   }
 
+  clearAllFlag() {
+    const currBorad = this.state.board
+    for (let i = 0; i < currBorad.length; i++) {
+      for (let j = 0; j < currBorad[i].length; j++) {
+        currBorad[x][y].isFlag = false
+      }
+    }
+    this.setState({ board: currBorad })
+  }
+
   // 右键标记小旗
   handleOnMouseDown(grid) {
+    const flagNum = this.getFlagNumber()
+    if (flagNum >= this.props.level * 10) { // 如果小旗的数量等于所有的雷数则不能插小旗了
+      return
+    }
+    const CurrBoard = this.state.board
     const x = grid.position.x
     const y = grid.position.y
-    const CurrBoard = this.state.board
     CurrBoard[x][y].isFlag = !(grid.isFlag)
     this.setState({ board: CurrBoard })
     this.judegIsOver() // 判断时候成功
+  }
+
+  getFlagNumber() {
+    const CurrBoard = this.state.board
+    let flagNum = 0
+    CurrBoard.forEach(row => {
+      row.forEach(col => {
+        if (col.isFlag) {
+          flagNum++
+        }
+      })
+    })
+    return flagNum
   }
 
   showAllMine(board) {
@@ -180,7 +208,7 @@ class Board extends React.Component {
     this.setState({board: newBoard})
   }
 
-  judegIsOver() {
+  judegIsOver() { // 判断游戏是否结束
     const currentBoard = this.state.board
     const mineAll = this.props.level * 10 // 雷总数量
     let result = 0 // 当前标记小旗正确数量
