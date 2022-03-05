@@ -228,7 +228,7 @@ class Board extends React.Component {
 
   render() {
     return (
-      <div className="board-box">
+      <div className="board-box" style={{width: this.props.level * 10 * 30 + 'px', height: this.props.level * 10 * 30 + 'px'}}>
         { this.state.board.map((row, rowIndex) => {
           return row.map((col, colIndex) => {
             return <Mine key={colIndex.toString() + rowIndex.toString()} gridData={col} handleClickGrid={this.clickGrid.bind(this)} handleOnMouseDown={this.handleOnMouseDown.bind(this)}></Mine>
