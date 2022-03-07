@@ -1,5 +1,10 @@
 body {
 }
+.hine-text {
+  font-size: 18px;
+  color: rgb(19, 206, 102);
+  text-align: center;
+}
 .level-list {
   width: 100%;
   display: flex;

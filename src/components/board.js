@@ -195,7 +195,8 @@ class Board extends React.Component {
     let currBoard = board.slice()
     currBoard.forEach(row => {
       row.forEach(col => {
-        col.isMask = false
+        col.isMask = false //  清理掉所有遮罩层
+        col.isFlag = false //  清理掉所有小旗
       })
     })
     // this.setState({board: currBoard})
@@ -240,6 +241,8 @@ class Board extends React.Component {
     }
     if (mineAll === result) {
       this.setState({ isOver: true })
+      this.showAllMine(this.state.board)
+      this.props.handleSuccess(true)
       window.alert('游戏成功')
     }
   }
