@@ -26,7 +26,10 @@ class Board extends React.Component {
     this.initMine()
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
+    if (prevProps.level !== this.props.level) {
+      this.initMine()
+    }
   }
 
   initMine() {
