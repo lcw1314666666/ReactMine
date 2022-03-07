@@ -6,6 +6,9 @@ import React from 'react';
 class Mine extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      colorList: ['red', '#FA8072', '#FF69B4', '#20B2AA', '#FFE4B5', '#87CEEB', '#9370DB', '#D2691E', '#FA8072']
+    }
   }
 
   componentDidMount() {
@@ -33,7 +36,7 @@ class Mine extends React.Component {
 
   render() {
     return (
-      <div className="mine" onClick={this.clickGrid.bind(this, this.props.gridData)}>
+      <div className="mine" style={{color: this.state.colorList[this.props.gridData.number]}} onClick={this.clickGrid.bind(this, this.props.gridData)}>
         <div className={this.props.gridData.isMask ? 'mask' : ''} onContextMenu={this.onMouseDown.bind(this, this.props.gridData)}>
           { this.showFlag(this.props.gridData) }
         </div>
