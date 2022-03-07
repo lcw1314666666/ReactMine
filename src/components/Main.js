@@ -10,7 +10,7 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      level: 3,
+      level: 1,
       levelList: [1, 2, 3]
     }
   }

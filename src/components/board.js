@@ -29,6 +29,7 @@ class Board extends React.Component {
   componentDidUpdate(prevProps) {
     if (prevProps.level !== this.props.level) {
       this.initMine()
+      this.setState({ isOver: false })
     }
   }
 
